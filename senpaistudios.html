@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>drippy_191 · Developer Portfolio</title>
+
+    <!-- ============ FONTS & ICONS ============ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+        /* ============================================================
+                   RESET & BASE
+                   ============================================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0b0d15;
+            --bg-secondary: #12151f;
+            --bg-card: rgba(18, 21, 31, 0.75);
+            --border-glow: rgba(120, 80, 255, 0.2);
+            --accent-1: #7c5cfc;
+            --accent-2: #5c8cfc;
+            --accent-gradient: linear-gradient(135deg, #7c5cfc, #5c8cfc);
+            --text-primary: #f0edff;
+            --text-secondary: #b0aad0;
+            --text-muted: #6f6990;
+            --radius: 16px;
+            --shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            background-image:
+                radial-gradient(ellipse at 20% 50%, rgba(124, 92, 252, 0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(92, 140, 252, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(124, 92, 252, 0.03) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(120, 80, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(120, 80, 255, 0.02) 1px, transparent 1px);
+            background-size: 48px 48px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ============================================================
+                   LOADING SCREEN
+                   ============================================================ */
+        #loading-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+            opacity: 1;
+            visibility: visible;
+            gap: 1.5rem;
+        }
+
+        #loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .loader-circle {
+            width: 64px;
+            height: 64px;
+            border: 4px solid rgba(124, 92, 252, 0.15);
+            border-top-color: var(--accent-1);
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loader-text {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            letter-spacing: 0.3px;
+        }
+
+        .loader-text i {
+            color: var(--accent-1);
+            margin-right: 0.4rem;
+        }
+
+        /* ============================================================
+                   MAIN CONTAINER
+                   ============================================================ */
+        .portfolio {
+            position: relative;
+            z-index: 1;
+            max-width: 960px;
+            width: 100%;
+            background: var(--bg-secondary);
+            border-radius: calc(var(--radius) + 8px);
+            padding: 2.5rem 2.5rem 2rem;
+            box-shadow: var(--shadow), 0 0 0 1px rgba(120, 80, 255, 0.08);
+            backdrop-filter: blur(2px);
+            border: 1px solid rgba(120, 80, 255, 0.06);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInContent 0.8s ease forwards;
+            animation-delay: 0.3s;
+        }
+
+        @keyframes fadeInContent {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .portfolio {
+                padding: 1.5rem 1.25rem 1.25rem;
+                border-radius: 20px;
+            }
+        }
+
+        /* ============================================================
+                   HEADER
+                   ============================================================ */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(120, 80, 255, 0.08);
+            flex-wrap: wrap;
+        }
+
+        .logo-wrapper {
+            flex-shrink: 0;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            padding: 3px;
+            box-shadow: 0 0 30px rgba(124, 92, 252, 0.25);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .logo-wrapper:hover {
+            transform: scale(1.04);
+            box-shadow: 0 0 48px rgba(124, 92, 252, 0.4);
+        }
+
+        .logo-wrapper img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            background: var(--bg-primary);
+        }
+
+        .logo-wrapper .logo-placeholder {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--bg-primary);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: var(--accent-1);
+            letter-spacing: -1px;
+        }
+
+        .header-text {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .header-text h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+        }
+
+        .header-text .discord-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            background: rgba(124, 92, 252, 0.08);
+            padding: 0.25rem 1rem 0.25rem 0.75rem;
+            border-radius: 40px;
+            border: 1px solid rgba(124, 92, 252, 0.12);
+            margin-top: 0.25rem;
+            -webkit-text-fill-color: var(--text-secondary);
+        }
+
+        .header-text .discord-tag i {
+            color: #5865f2;
+            font-size: 0.9rem;
+        }
+
+        .header-text .badge-role {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--accent-1);
+            background: rgba(124, 92, 252, 0.12);
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            border: 1px solid rgba(124, 92, 252, 0.1);
+            margin-top: 0.4rem;
+            -webkit-text-fill-color: var(--accent-1);
+        }
+
+        /* ============================================================
+                   SECTION COMMON
+                   ============================================================ */
+        .section {
+            margin-top: 2.25rem;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            color: var(--text-primary);
+            margin-bottom: 1.25rem;
+        }
+
+        .section-title i {
+            color: var(--accent-1);
+            font-size: 1.1rem;
+            width: 1.6rem;
+            text-align: center;
+        }
+
+        .section-title .accent-line {
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(124, 92, 252, 0.3), transparent);
+            margin-left: 0.25rem;
+        }
+
+        /* ============================================================
+                   ABOUT / BIO
+                   ============================================================ */
+        .bio {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem 2rem;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 1.5rem 1.75rem;
+            border: 1px solid rgba(120, 80, 255, 0.06);
+            backdrop-filter: blur(4px);
+        }
+
+        .bio-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .bio-item i {
+            color: var(--accent-1);
+            width: 1.2rem;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .bio-item strong {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .bio-item .highlight {
+            color: var(--accent-1);
+            font-weight: 500;
+        }
+
+        /* ============================================================
+                   SERVER GRID
+                   ============================================================ */
+        .server-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .server-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 1.25rem 1rem;
+            border: 1px solid rgba(120, 80, 255, 0.05);
+            transition: all 0.25s ease;
+            text-align: center;
+            backdrop-filter: blur(4px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .server-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .server-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(120, 80, 255, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .server-card:hover::before {
+            opacity: 1;
+        }
+
+        .server-card .server-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin: 0 auto 0.5rem;
+            display: block;
+            background: var(--bg-primary);
+            border: 1px solid rgba(120, 80, 255, 0.08);
+        }
+
+        .server-card .server-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            word-break: break-all;
+        }
+
+        .server-card .server-status {
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+            display: block;
+        }
+
+        .server-card .server-status .closed {
+            color: #f87171;
+        }
+
+        .server-card .server-status .online {
+            color: #4ade80;
+        }
+
+        /* ============================================================
+                   BUILDBYBIT
+                   ============================================================ */
+        .buildbybit-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 1.5rem 1.75rem;
+            border: 1px solid rgba(120, 80, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            backdrop-filter: blur(4px);
+            transition: border-color 0.3s ease;
+        }
+
+        .buildbybit-card:hover {
+            border-color: rgba(120, 80, 255, 0.15);
+        }
+
+        .buildbybit-card .bbb-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .buildbybit-card .bbb-logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            object-fit: cover;
+            background: var(--bg-primary);
+            border: 1px solid rgba(255, 147, 30, 0.15);
+            flex-shrink: 0;
+        }
+
+        .buildbybit-card .bbb-logo-fallback {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: rgba(247, 147, 30, 0.12);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: #f7931e;
+            flex-shrink: 0;
+            border: 1px solid rgba(247, 147, 30, 0.15);
+        }
+
+        .buildbybit-card .bbb-info .bbb-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .buildbybit-card .bbb-info .bbb-text .label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .buildbybit-card .bbb-info .bbb-text .value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.4rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            border: none;
+            cursor: pointer;
+            background: var(--accent-gradient);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(124, 92, 252, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(124, 92, 252, 0.35);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(120, 80, 255, 0.2);
+            color: var(--text-primary);
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background: rgba(124, 92, 252, 0.08);
+            border-color: rgba(120, 80, 255, 0.3);
+            box-shadow: none;
+        }
+
+        .btn-github {
+            background: #24292e;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-github:hover {
+            background: #2d333b;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
+        }
+
+        /* ============================================================
+                   GITHUB
+                   ============================================================ */
+        .github-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 1.5rem 1.75rem;
+            border: 1px solid rgba(120, 80, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            backdrop-filter: blur(4px);
+            transition: border-color 0.3s ease;
+        }
+
+        .github-card:hover {
+            border-color: rgba(120, 80, 255, 0.15);
+        }
+
+        .github-card .gh-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .github-card .gh-info i {
+            font-size: 2.2rem;
+            color: #f0f6fc;
+        }
+
+        .github-card .gh-info .gh-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .github-card .gh-info .gh-text .label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .github-card .gh-info .gh-text .value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* ============================================================
+                   SENPAI STUDIOS
+                   ============================================================ */
+        .senpai-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 1.5rem 1.75rem;
+            border: 1px solid rgba(120, 80, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            backdrop-filter: blur(4px);
+            transition: border-color 0.3s ease;
+        }
+
+        .senpai-card:hover {
+            border-color: rgba(120, 80, 255, 0.15);
+        }
+
+        .senpai-card .senpai-left {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .senpai-card .senpai-logo {
+            flex-shrink: 0;
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            background: var(--accent-gradient);
+            padding: 2px;
+            box-shadow: 0 0 24px rgba(124, 92, 252, 0.2);
+        }
+
+        .senpai-card .senpai-logo img {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            object-fit: cover;
+            display: block;
+            background: var(--bg-primary);
+        }
+
+        .senpai-card .senpai-logo .senpai-placeholder {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            background: var(--bg-primary);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-1);
+        }
+
+        .senpai-card .senpai-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .senpai-card .senpai-info .senpai-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+
+        .senpai-card .senpai-info .senpai-role {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .senpai-card .senpai-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-senpai {
+            background: linear-gradient(135deg, #ff6b9d, #c44d8f);
+            box-shadow: 0 4px 16px rgba(255, 107, 157, 0.2);
+        }
+
+        .btn-senpai:hover {
+            box-shadow: 0 8px 28px rgba(255, 107, 157, 0.35);
+        }
+
+        /* ============================================================
+                   FOOTER
+                   ============================================================ */
+        .footer {
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(120, 80, 255, 0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .footer .footer-socials {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .footer .footer-socials a {
+            color: var(--text-muted);
+            transition: color 0.2s ease, transform 0.2s ease;
+            font-size: 1.1rem;
+        }
+
+        .footer .footer-socials a:hover {
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        /* ============================================================
+                   MISC UTILITIES
+                   ============================================================ */
+        .gap-1 {
+            gap: 0.5rem;
+        }
+        .mt-1 {
+            margin-top: 0.5rem;
+        }
+        .mt-2 {
+            margin-top: 1.5rem;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .flex-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ============================================================
+                   RESPONSIVE TWEAKS
+                   ============================================================ */
+        @media (max-width: 640px) {
+            .header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .header-text .discord-tag {
+                justify-content: center;
+            }
+            .bio {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 1.25rem;
+            }
+            .buildbybit-card,
+            .github-card,
+            .senpai-card {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .buildbybit-card .bbb-info,
+            .github-card .gh-info,
+            .senpai-card .senpai-left {
+                justify-content: center;
+            }
+            .senpai-card .senpai-actions {
+                justify-content: center;
+            }
+            .server-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+            .footer {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .server-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .portfolio {
+                padding: 1rem;
+            }
+        }
+
+        /* ============================================================
+                   SCROLLBAR
+                   ============================================================ */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-1);
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-2);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ============================================================
+    LOADING SCREEN
+    ============================================================ -->
+    <div id="loading-screen">
+        <div class="loader-circle"></div>
+        <div class="loader-text"><i class="fas fa-code"></i> Loading profile...</div>
+    </div>
+
+    <!-- ============================================================
+    MAIN PORTFOLIO
+    ============================================================ -->
+    <div class="portfolio">
+
+        <!-- ============================================================
+        HEADER
+        ============================================================ -->
+        <header class="header">
+            <div class="logo-wrapper">
+                <!--
+                =====================================================
+                REPLACE src WITH YOUR DISCORD CDN LOGO URL:
+                https://cdn.discordapp.com/attachments/.../your-logo.png
+                =====================================================
+                -->
+                <img
+                src="https://cdn.discordapp.com/attachments/1500362179986325646/1521331870921658480/DSCN4345.png?ex=6a447237&is=6a4320b7&hm=874d7bd081b876bb0e54c96616aa38709addfbea61c9989238ffcff1a11fb1ef&"
+                alt="drippy_191 logo"
+                id="profileLogo"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                />
+                <div class="logo-placeholder">✦</div>
+            </div>
+
+            <div class="header-text">
+                <h1>drippy_191</h1>
+                <div class="discord-tag">
+                    <i class="fab fa-discord"></i> @drippy_191
+                </div>
+                <div class="badge-role">
+                    <i class="fas fa-code" style="margin-right:0.3rem;"></i> Senior Developer
+                </div>
+            </div>
+        </header>
+
+        <!-- ============================================================
+        ABOUT / BIO
+        ============================================================ -->
+        <section class="section">
+            <div class="bio">
+                <span class="bio-item">
+                    <i class="fas fa-user-astronaut"></i>
+                    <span><strong>Minecraft</strong> · Plugin Developer</span>
+                </span>
+                <span class="bio-item">
+                    <i class="fas fa-cubes"></i>
+                    <span><strong>4+</strong> servers · <span class="highlight">BuildByBit</span> author</span>
+                </span>
+                <span class="bio-item">
+                    <i class="fas fa-rocket"></i>
+                    <span>Founder of <strong style="color:#ff6b9d;">Senpai Studios</strong></span>
+                </span>
+                <span class="bio-item">
+                    <i class="fas fa-map-pin"></i>
+                    <span>Building high‑performance Minecraft experiences</span>
+                </span>
+                <span class="bio-item">
+                    <i class="fas fa-venus"></i>
+                    <span><strong>She/Her</strong></span>
+                </span>
+            </div>
+        </section>
+
+        <!-- ============================================================
+        MINECRAFT SERVER EXPERIENCE
+        ============================================================ -->
+        <section class="section">
+            <div class="section-title">
+                <i class="fas fa-server"></i>
+                Server Experience
+                <span class="accent-line"></span>
+            </div>
+
+            <div class="server-grid">
+                <!-- frostmc -->
+                <div class="server-card">
+                    <!--
+                    =====================================================
+                    REPLACE src WITH YOUR DISCORD CDN LOGO FOR frostmc
+                    =====================================================
+                    -->
+                    <img class="server-logo" src="https://cdn.discordapp.com/attachments/1500362179986325646/1521331918833193060/FrostMC_Season_8.png.webp?ex=6a447242&is=6a4320c2&hm=86c598ed53351a7c310ca50938b6e3b14316ea42a0640498f9d5f3eed3428070&" />
+                    <div class="server-name">mc.frostmc.fr</div>
+                    <span class="server-status"><span class="online">●</span> Online</span>
+                </div>
+
+                <!-- prismsmp -->
+                <div class="server-card">
+                    <img class="server-logo" src="https://cdn.discordapp.com/icons/1503421348662476980/7817b7eb7da4cec818fe949f374b80c1.webp?size=2048" />
+                    <div class="server-name">prismsmp.net</div>
+                    <span class="server-status"><span class="online">●</span> Online</span>
+                </div>
+
+                <!-- mastersmp -->
+                <div class="server-card">
+                    <img class="server-logo" src="https://cdn.discordapp.com/attachments/1499842929974448158/1521335526433755136/508179.png?ex=6a44759e&is=6a43241e&hm=fb072f46e7a2ef60641928933f6a8d96616db183e644f59a63f7dc9a6fbede0b&" />
+                    <div class="server-name">mastersmp</div>
+                    <span class="server-status"><span class="closed">✕</span> Closed</span>
+                </div>
+
+                <!-- VexSMP -->
+                <div class="server-card">
+                    <img class="server-logo" src="https://cdn.discordapp.com/attachments/1499842929974448158/1521335849357283359/icon.png?ex=6a4475eb&is=6a43246b&hm=6506d433fd7d7580b8f53f369dbcf0d473af0a0d4754f69556484465ba806c07&" />
+                    <div class="server-name">VexSMP</div>
+                    <span class="server-status"><span class="closed">✕</span> Closed</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+        BUILDBYBIT
+        ============================================================ -->
+        <section class="section">
+            <div class="section-title">
+                <i class="fas fa-plug"></i>
+                BuildByBit Plugins
+                <span class="accent-line"></span>
+            </div>
+
+            <div class="buildbybit-card">
+                <div class="bbb-info">
+                    <!-- BuildByBit logo placeholder -->
+                    <img
+                    class="bbb-logo"
+                    src="https://cdn.discordapp.com/icons/930296976606629918/44f33f72d387bb1ef7c81ac9ad8ae576.webp?size=2048"
+                    alt="BuildByBit logo"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                    />
+                    <div class="bbb-logo-fallback">
+                        <i class="fas fa-cube"></i>
+                    </div>
+                    <div class="bbb-text">
+                        <span class="label">Plugin Author</span>
+                        <span class="value">Custom plugins · Minecraft</span>
+                    </div>
+                </div>
+                <!--
+                =====================================================
+                REPLACE href WITH YOUR BUILDBYBIT PROFILE URL:
+                https://www.buildbybit.com/members/your-username/
+                =====================================================
+                -->
+                <a href="https://builtbybit.com/members/mrnaruto.604676/" class="btn" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-external-link-alt"></i> View Profile
+                </a>
+            </div>
+        </section>
+
+        <!-- ============================================================
+        GITHUB
+        ============================================================ -->
+        <section class="section">
+            <div class="section-title">
+                <i class="fab fa-github"></i>
+                GitHub
+                <span class="accent-line"></span>
+            </div>
+
+            <div class="github-card">
+                <div class="gh-info">
+                    <i class="fab fa-github"></i>
+                    <div class="gh-text">
+                        <span class="label">Open Source</span>
+                        <span class="value">@drippy_191 · code &amp; projects</span>
+                    </div>
+                </div>
+                <!--
+                =====================================================
+                REPLACE href WITH YOUR GITHUB PROFILE URL:
+                https://github.com/your-username
+                =====================================================
+                -->
+                <a href="https://github.com/shahidugfdgrsh" class="btn btn-github" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+            </div>
+        </section>
+
+        <!-- ============================================================
+        SENPAI STUDIOS
+        ============================================================ -->
+        <section class="section">
+            <div class="section-title">
+                <i class="fas fa-film"></i>
+                Senpai Studios
+                <span class="accent-line"></span>
+            </div>
+
+            <div class="senpai-card">
+                <div class="senpai-left">
+                    <div class="senpai-logo">
+                        <!--
+                        =====================================================
+                        REPLACE src WITH YOUR SENPAI STUDIOS DISCORD CDN LOGO:
+                        https://cdn.discordapp.com/attachments/.../senpai-logo.png
+                        =====================================================
+                        -->
+                        <img
+                        src="https://cdn.discordapp.com/attachments/1500362179986325646/1521331650804453489/logo.png?ex=6a447202&is=6a432082&hm=8ba7464348c65e9b2f0e1bf368a51a5916f7ce89500af00ed396ef0d0fdd77e3&"
+                        alt="Senpai Studios logo"
+                        id="senpaiLogo"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        />
+                        <div class="senpai-placeholder">✧</div>
+                    </div>
+                    <div class="senpai-info">
+                        <span class="senpai-name">Senpai Studios</span>
+                        <span class="senpai-role"><i class="fas fa-crown" style="color:#ffd700;margin-right:0.3rem;"></i> Founder &amp; Lead Developer</span>
+                    </div>
+                </div>
+
+                <div class="senpai-actions">
+                    <!--
+                    =====================================================
+                    REPLACE href WITH YOUR SENPAI STUDIOS DISCORD INVITE:
+                    =====================================================
+                    -->
+                    <a href="https://discord.gg/xFxSdaDum8" class="btn btn-senpai" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-discord"></i> Join Studio
+                    </a>
+                    <a href="https://panel.senpaistudios.xyz" class="btn btn-outline" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-external-link-alt"></i> Website
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+        FOOTER
+        ============================================================ -->
+        <footer class="footer">
+            <span>&copy; 2026 drippy_191 · built with <i class="fas fa-heart" style="color:#ff6b9d;"></i></span>
+            <div class="footer-socials">
+                <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Discord" title="Discord">
+                    <i class="fab fa-discord"></i>
+                </a>
+                <a href="#" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="#" target="_blank" rel="noopener noreferrer" aria-label="BuildByBit" title="BuildByBit">
+                    <i class="fas fa-cube"></i>
+                </a>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ============================================================
+    JAVASCRIPT – Loading screen & interactions
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ---- LOADING SCREEN ----
+            const loadingScreen = document.getElementById('loading-screen');
+
+            function hideLoading() {
+                loadingScreen.classList.add('hidden');
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 800);
+            }
+
+            window.addEventListener('load', function() {
+                setTimeout(hideLoading, 600);
+            });
+
+            if (document.readyState === 'complete') {
+                setTimeout(hideLoading, 300);
+            }
+
+            // ---- CONSOLE BRANDING ----
+            console.log('%c✦ drippy_191 · Developer Portfolio ✦',
+                'font-size:18px; font-weight:700; color:#7c5cfc;');
+            console.log('%cBuilt with ❤️ · Senpai Studios',
+                'font-size:12px; color:#b0aad0;');
+            console.log('%cPronouns: She/Her', 'font-size:12px; color:#ff6b9d;');
+
+            // ---- OUTBOUND LINK TRACKING ----
+            document.querySelectorAll('a[target="_blank"]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    console.log(`[outbound] ${this.href}`);
+                });
+            });
+
+        })();
+    </script>
+
+</body>
+</html>
